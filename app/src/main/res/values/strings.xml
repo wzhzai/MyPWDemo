@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">My Powerword</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="user_name">用户名</string>
+    <string name="menu_translate">翻译</string>
+    <string name="menu_read">阅读</string>
+    <string name="menu_daily">每日一句</string>
+    <string name="menu_voa">听力</string>
+    <string name="menu_glossary">生词本</string>
+    <string name="menu_offline">离线词典</string>
+    <string name="menu_setting">设置</string>
+
+<!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

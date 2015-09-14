@@ -1,0 +1,13 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <dimen name="user_logo_size">66dp</dimen>
+    <dimen name="navigation_header_padding_top_bottom">28dp</dimen>
+    <dimen name="navigation_padding_left_right">15dp</dimen>
+    <dimen name="translate_edit_text_margin_left_right">20dp</dimen>
+    <dimen name="translate_edit_text_padding_top_bottom">5dp</dimen>
+    <dimen name="translate_edit_text_padding_left">8dp</dimen>
+    <dimen name="translate_edit_text_padding_right">30dp</dimen>
+</resources>
