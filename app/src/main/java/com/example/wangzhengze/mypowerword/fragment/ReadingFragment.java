@@ -6,12 +6,18 @@ import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.wangzhengze.mypowerword.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -32,6 +38,8 @@ public class ReadingFragment extends Fragment {
     private String mParam2;
 
     private Context mContext;
+
+    private List<String> mContentList;
 
 
     /**
@@ -69,6 +77,7 @@ public class ReadingFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        mContentList = new ArrayList<>();
     }
 
     @Override
@@ -84,10 +93,44 @@ public class ReadingFragment extends Fragment {
 
         Toolbar toolbar = (Toolbar) view.findViewById(R.id.tool_bar);
         AppCompatActivity compatActivity = (AppCompatActivity) mContext;
-        toolbar.setLogo(R.mipmap.arrow_back);
-//        toolbar.setTitle(R.string.menu_read);
         compatActivity.setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.mipmap.menu_button);
-        compatActivity.getSupportActionBar().setDisplayShowTitleEnabled(true);
+
+        for (int i = 0; i < 100; i++) {
+            mContentList.add("this is " + i);
+        }
+
+        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.reading_recycle);
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+        recyclerView.setAdapter(new ReadingRecyclerAdapter());
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
+
+        TextView tvTitle;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            tvTitle = (TextView) itemView.findViewById(R.id.title);
+        }
+    }
+
+    class ReadingRecyclerAdapter extends RecyclerView.Adapter<ViewHolder> {
+
+        @Override
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View itemView = LayoutInflater.from(mContext).inflate(R.layout.item_reading_recycler, parent, false);
+            return new ViewHolder(itemView);
+        }
+
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            holder.tvTitle.setText(mContentList.get(position));
+        }
+
+        @Override
+        public int getItemCount() {
+            return mContentList.size();
+        }
     }
 }
