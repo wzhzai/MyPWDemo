@@ -9,12 +9,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.wangzhengze.mypowerword.R;
+import com.example.wangzhengze.mypowerword.adapter.RecyclerHeaderAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,13 +28,12 @@ import java.util.List;
  */
 public class ReadingFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private final static String TAG = "ReadingFragment";
+
     private static final String ARG_PARAM1 = "param1";
 
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
 
     private String mParam2;
@@ -100,9 +101,22 @@ public class ReadingFragment extends Fragment {
             mContentList.add("this is " + i);
         }
 
+        List<View> mHeaderViewList = new ArrayList<>();
+
+        List<View> mFooterViewList = new ArrayList<>();
+
+        TextView tvHeader = new TextView(mContext);
+        tvHeader.setText("this is header");
+        TextView tvFooter = new TextView(mContext);
+        tvFooter.setText("this is footer");
+
+        mHeaderViewList.add(tvHeader);
+        mFooterViewList.add(tvFooter);
+
+
         RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.reading_recycle);
         recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        recyclerView.setAdapter(new ReadingRecyclerAdapter());
+        recyclerView.setAdapter(new RecyclerHeaderAdapter<>(new ReadingRecyclerAdapter(), mHeaderViewList, mFooterViewList));
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -119,6 +133,7 @@ public class ReadingFragment extends Fragment {
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            Log.e(TAG, "onCreateViewHolder --> viewType = " + viewType);
             View itemView = LayoutInflater.from(mContext).inflate(R.layout.item_reading_recycler, parent, false);
             return new ViewHolder(itemView);
         }
