@@ -6,7 +6,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -16,7 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.wangzhengze.mypowerword.R;
-import com.example.wangzhengze.mypowerword.adapter.RecyclerHeaderAdapter;
+import com.example.wangzhengze.mypowerword.view.RecyclerViewVertical;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,22 +100,27 @@ public class ReadingFragment extends Fragment {
             mContentList.add("this is " + i);
         }
 
-        List<View> mHeaderViewList = new ArrayList<>();
-
-        List<View> mFooterViewList = new ArrayList<>();
-
         TextView tvHeader = new TextView(mContext);
         tvHeader.setText("this is header");
         TextView tvFooter = new TextView(mContext);
         tvFooter.setText("this is footer");
 
-        mHeaderViewList.add(tvHeader);
-        mFooterViewList.add(tvFooter);
+        TextView tvHeader2 = new TextView(mContext);
+        tvHeader2.setText("this is header2");
+        TextView tvFooter2 = new TextView(mContext);
+        tvFooter2.setText("this is footer2");
 
 
-        RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.reading_recycle);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        recyclerView.setAdapter(new RecyclerHeaderAdapter<>(new ReadingRecyclerAdapter(), mHeaderViewList, mFooterViewList));
+        RecyclerViewVertical recyclerView = (RecyclerViewVertical) view.findViewById(R.id.reading_recycle);
+        try {
+            recyclerView.addHeaderView(tvHeader);
+            recyclerView.addFooterView(tvFooter);
+            recyclerView.addHeaderView(tvHeader2);
+            recyclerView.addFooterView(tvFooter2);
+        } catch (RecyclerViewVertical.SizeTooLargeException e) {
+            e.printStackTrace();
+        }
+        recyclerView.setAdapter(new ReadingRecyclerAdapter());
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
