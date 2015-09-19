@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-
+apply plugin: "me.tatarka.retrolambda"
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.1"
@@ -17,6 +17,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -26,4 +30,8 @@ dependencies {
     compile 'com.android.support:support-v4:23.0.1'
     compile 'com.android.support:design:23.0.1'
     compile 'com.android.support:recyclerview-v7:23.0.1'
+//        compile 'io.reactivex:rxjava:1.0.14'
+    compile 'com.squareup.retrofit:retrofit:2.0.0-beta1'
+    compile 'io.reactivex:rxandroid:1.0.1'
+    retrolambdaConfig 'net.orfjackal.retrolambda:retrolambda:+'
 }

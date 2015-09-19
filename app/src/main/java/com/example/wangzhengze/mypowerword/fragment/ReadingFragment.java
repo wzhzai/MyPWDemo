@@ -20,6 +20,8 @@ import com.example.wangzhengze.mypowerword.view.RecyclerViewVertical;
 import java.util.ArrayList;
 import java.util.List;
 
+import rx.Observable;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ReadingFragment#newInstance} factory method to
@@ -77,6 +79,10 @@ public class ReadingFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+        Observable.just("hello, world!").subscribe(s -> Log.e(TAG, "s = " + s));
+
+
         mContentList = new ArrayList<>();
     }
 
