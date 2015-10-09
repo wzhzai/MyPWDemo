@@ -143,7 +143,6 @@ public class ReadingFragment extends Fragment {
 
         @Override
         public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            Log.e(TAG, "onCreateViewHolder --> viewType = " + viewType);
             View itemView = LayoutInflater.from(mContext).inflate(R.layout.item_reading_recycler, parent, false);
             return new ViewHolder(itemView);
         }
