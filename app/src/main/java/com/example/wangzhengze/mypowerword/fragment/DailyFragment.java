@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.wangzhengze.mypowerword.R;
+import com.squareup.okhttp.ResponseBody;
 
 import org.json.JSONObject;
 
@@ -34,6 +35,7 @@ import rx.Observable;
 import rx.Scheduler;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
 /**
@@ -100,7 +102,7 @@ public class DailyFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mTvName = (TextView) view.findViewById(R.id.name);
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://apis.baidu.com")
+                .baseUrl("http://apis.baidu.com/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .build();
@@ -110,25 +112,33 @@ public class DailyFragment extends Fragment {
         map.put("day", "6");
         map.put("appkey", "1307ee261de8bbcf83830de89caae73f");
 
-        Observable<HistoryBean> result = service.listRepos(map);
-        Log.e(TAG, "this is no net?!");
-        result
-                .subscribeOn(Schedulers.io())
-                .doOnNext(historyBean1 -> Log.e(TAG, "doOnNext thread = " + Thread.currentThread().getName()))
+        Observable<ResponseBody> result2 = service.listRepos(map);
+        result2.subscribeOn(Schedulers.io())
+                .onErrorResumeNext(Observable::error)
+                .doOnNext(historyBean -> Log.e(TAG, "doOnNext thread = " + Thread.currentThread().getName()))
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(historyBean -> {
-                    Log.e(TAG, "currentThread = " + Thread.currentThread().getName());
-                    mTvName.setText("aaaaaaa");
+                .subscribe(new Subscriber<ResponseBody>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e(TAG, "e = " + e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(ResponseBody historyBean) {
+                        Log.e(TAG, "onNext thread = " + Thread.currentThread().getName());
+                        try {
+                            Log.e(TAG, "historyBean = " + historyBean.string());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 });
-//        new Thread(() -> {
-//
-////            Call<HistoryBean> result = service.listRepos(map);
-////            try {
-////                Log.e(TAG, "result = " + result.execute().body().toString());
-////            } catch (IOException e) {
-////                e.printStackTrace();
-////            }
-//        }).start();
+
         test();
 
     }
@@ -137,8 +147,7 @@ public class DailyFragment extends Fragment {
     public interface TodayHistoryService {
         @Headers("apikey: 142ac2bc6840094a4766e8c80189273f")
         @GET("/netpopo/todayhistory/todayhistory")
-        Observable<HistoryBean> listRepos(@QueryMap Map<String, String> options);
-//        Call<HistoryBean> listRepos(@QueryMap Map<String, String> options);
+        Observable<ResponseBody> listRepos(@QueryMap Map<String, String> options);
     }
 
 
@@ -181,12 +190,13 @@ public class DailyFragment extends Fragment {
     Callback<HistoryBean> callback = new Callback<HistoryBean>() {
         @Override
         public void onResponse(Response<HistoryBean> response, Retrofit retrofit) {
-            Log.e(TAG, "response code = " + response.code() + "; response = " + response.body().toString());
+            Log.e(TAG, "response code = " + response.code());
         }
 
         @Override
         public void onFailure(Throwable t) {
-            Log.e(TAG, "t = " + Arrays.toString(t.getStackTrace()));
+//            Log.e(TAG, "t = " + Arrays.toString(t.getStackTrace()));
+            t.printStackTrace();
         }
     };
 
